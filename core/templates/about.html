@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}О себе{% endblock title %}
+
+{% block content %}
+<p>Имя: {{ name }}</p>
+<p>Фамилия: {{ lastname }}</p>
+<p>Отчество: {{ surname }}</p>
+<p>Навыки:</p>
+<ul>
+    {% for skill in skills %}
+        <li>{{ skill }}</li>
+    {% empty %}
+    <p>Пусто и грустно</p>
+    {% endfor %}
+</ul>
+<p>Проекты:</p>
+<ul>
+    {% for project in projects %}
+    <li>
+        <a href="{{ project.url }}">{{ project.title }}</a>
+    </li>
+    {% empty %}
+        <li>Пусто и грустно</li>
+    {% endfor %}
+</ul>
+<p>Образование</p>
+<p>Университет: {{ education.name }} ({{ education.shortname }})</p>
+<p>Специальность: {{ education.speciality }}</p>
+<p>Курс: {{ education.course }}</p>
+<p>Контактная информация:</p>
+<p>Телеграм: {{ contact_info.telegram }}, <a href="{{ contact_info.telegram_url }}">Кликабельная ссылка</a></p>
+<p>Электронная почта: {{ contact_info.mail }}</p>
+{% endblock content %}

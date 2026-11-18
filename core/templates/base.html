@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{% block title %}Personal blog{% endblock %}</title>
-    <link rel="stylesheet" href="{% static css/style.cc %}">
-    {% block extra_css %}{% endblock %}
+    <meta charset="UTF-8">
+    <title>{% block title %}Personal blog{% endblock title %}</title>
+    <!-- {% block extra_css %}{% endblock %} -->
 </head>
 <body>
     <header class="topbarmenu">
         {% include "includes/navbar.html" %}
     </header>
     <div class="layout">     
-        {% block sidebar %}{% endblock %}
+        <!-- {% block sidebar %}{% endblock %} -->
         <main class="content">
-            {% block page %}{% endblock %}
+            {% block content %}{% endblock content %}
         </main>
     </div>
     <footer class="footer">
