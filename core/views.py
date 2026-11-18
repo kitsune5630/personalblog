@@ -1,41 +1,39 @@
 from django.shortcuts import render
-from .models import UserModel
 from django.http import HttpResponseRedirect, HttpResponseNotFound
 
 
 # Create your views here.
-def index(request):
-    users = UserModel.objects.all()
-    data = {"users": users}
-    return render(request, 'index.html', data=data)
+def home(request):
+    return render(request, "home.html")
 
-def create(request):
-    if request.method == "POST":
-        user = UserModel()
-        user.name = request.POST.get("name")
-        user.password = request.POST.get("password")
-        user.save()
-    return HttpResponseRedirect("/")
+def references(request):
+    github_ref = "https://github.com/kitsune5630"
+    leetcode_ref = "https://leetcode.com/u/kitsune12345/"
+    data = {
+        'github_ref' : github_ref,
+        'leetcode_ref' : leetcode_ref,
+    }
+    return render(request, "references.html", context=data)
 
-def edit(request, id):
-    try:
-        user = UserModel.objects.get(id=id)
-
-        if request.method == "POST":
-            user.name = request.POST.get("name")
-            user.password = request.POST.get("password")
-            user.save()
-            return HttpResponseRedirect("/")
-        else:
-            return render(request, "edit.html", {"user": user})
-    except UserModel.DoesNotExist:
-        return HttpResponseNotFound("<h2>User not found</h2>")
-
-def delete(request, id):
-    try:
-        user = UserModel.objects.get(id=id)
-        user.delete()
-        return HttpResponseRedirect("/")
-    except UserModel.DoesNotExist:
-        return HttpResponseNotFound("<h2>User not found</h2>")
+def about(request):
+    context = {
+        "name": "Иван", "lastname": "Иванов", "surname": "Иванович",
+        "skills": ["Python", "Django", "HTML/CSS", "GIT", "DOCKER", "REST API"],
+        "projects": [
+            {"title": "Блог", "url": "https://github.com/kitsune5630/personalblog"},
+        ],
+        "education": {
+            "image": "...", 
+            "name": "Новосибирский Государственный Технический Университет",
+            "shortname": "НГТУ",
+            "speciality": "Программное обеспечение компьютерных систем и сетей",
+            "course": "4",
+        },
+        "contact_info": {
+            "telegram": "@kitsune5630",
+            "telegram_url": "https://t.me/kitsune5630",
+            "mail": "kitsune5630@proton.me"
+        }
+    }
+    return render(request, "about.html", context=context)
 
