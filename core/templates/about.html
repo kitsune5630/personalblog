@@ -2,33 +2,55 @@
 
 {% block title %}О себе{% endblock title %}
 
+{% block extra_css %}
+{% load static %}
+    <link rel="stylesheet" href="{% static 'css/about.css' %}">
+{% endblock extra_css %}
+
 {% block content %}
-<p>Имя: {{ name }}</p>
-<p>Фамилия: {{ lastname }}</p>
-<p>Отчество: {{ surname }}</p>
-<p>Навыки:</p>
-<ul>
-    {% for skill in skills %}
-        <li>{{ skill }}</li>
-    {% empty %}
-    <p>Пусто и грустно</p>
-    {% endfor %}
-</ul>
-<p>Проекты:</p>
-<ul>
-    {% for project in projects %}
-    <li>
-        <a href="{{ project.url }}">{{ project.title }}</a>
-    </li>
-    {% empty %}
-        <li>Пусто и грустно</li>
-    {% endfor %}
-</ul>
-<p>Образование</p>
-<p>Университет: {{ education.name }} ({{ education.shortname }})</p>
-<p>Специальность: {{ education.speciality }}</p>
-<p>Курс: {{ education.course }}</p>
-<p>Контактная информация:</p>
-<p>Телеграм: {{ contact_info.telegram }}, <a href="{{ contact_info.telegram_url }}">Кликабельная ссылка</a></p>
-<p>Электронная почта: {{ contact_info.mail }}</p>
+<div class="profile-header">
+    <div class="profile-image">
+        <img src="{{ personalphoto }}" alt="Фото профиля" width="200">
+    </div>
+    <div class="profile-info">
+        <p>Имя: {{ name }}</p>
+        <p>Фамилия: {{ lastname }}</p>
+        <p>Отчество: {{ surname }}</p>
+        <p>Контактная информация</p>
+        <p>Телеграм: <a href="{{ contact_info.telegram_url }}">{{ contact_info.telegram }}</a></p>
+        <p>Электронная почта: {{ contact_info.mail }}</p>
+    </div>
+</div>
+<div class="profile-details">
+    <p>Навыки:</p>
+    <ul>
+        {% for skill in skills %}
+            <li>{{ skill }}</li>
+        {% empty %}
+        <p>Пусто и грустно</p>
+        {% endfor %}
+    </ul>
+    <p>Проекты:</p>
+    <ul>
+        {% for project in projects %}
+        <li>
+            <a href="{{ project.url }}">{{ project.title }}</a>
+        </li>
+        {% empty %}
+            <li>Пусто и грустно</li>
+        {% endfor %}
+        <p>Excepteur veniam culpa et elit in officia exercitation est non amet in cillum voluptate.</p>
+    </ul>
+    <p>Образование</p>
+    <div class="education-header">
+        <div class="education-image">
+            <img src="{{ education.image }}" alt="UNI PHOTO" width="300">
+        </div>
+        <div class="education-info">
+            <p>Университет: {{ education.name }} ({{ education.shortname }})</p>
+            <p>Специальность: {{ education.speciality }}</p>
+            <p>Курс: {{ education.course }}</p>
+        </div>
+    </div>
+</div>
 {% endblock content %}

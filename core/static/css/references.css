@@ -1,0 +1,30 @@
+.refs {
+    padding-left: 20px; /* или margin-left, или padding на контейнер */
+    font-size: 1.1rem;  /* или 18px */
+}
+
+.github-icon-1 {
+    width: 30px;
+    height: 30px;
+    fill: #111 ;   /* иконка берёт цвет текста */
+    vertical-align: middle; /* выравнивание по тексту */
+    margin-right: 5px;
+}
+
+/* В тёмной теме */
+body.dark-theme .github-icon-1 {
+    fill: #fff;
+}
+
+.leetcode-icon-1 {
+    width: 30px;
+    height: 30px;
+    fill: #111 ;   /* иконка берёт цвет текста */
+    vertical-align: middle; /* выравнивание по тексту */
+    margin-right: 5px;
+}
+
+/* В тёмной теме */
+body.dark-theme .leetcode-icon-1 {
+    fill: #fff;
+}

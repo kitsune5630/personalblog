@@ -17,13 +17,17 @@ def references(request):
 
 def about(request):
     context = {
+        "personalphoto": "/static/images/personalphoto.png", 
         "name": "Иван", "lastname": "Иванов", "surname": "Иванович",
-        "skills": ["Python", "Django", "HTML/CSS", "GIT", "DOCKER", "REST API"],
+        "skills": [
+            "Python", "Django", "HTML/CSS", 
+            "GIT", "DOCKER", "REST API"
+        ],
         "projects": [
             {"title": "Блог", "url": "https://github.com/kitsune5630/personalblog"},
         ],
         "education": {
-            "image": "...", 
+            "image": "/static/images/Nstu.jpg", 
             "name": "Новосибирский Государственный Технический Университет",
             "shortname": "НГТУ",
             "speciality": "Программное обеспечение компьютерных систем и сетей",
