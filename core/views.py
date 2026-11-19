@@ -1,10 +1,28 @@
-from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponseNotFound
-
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.http import HttpResponseRedirect, HttpResponseNotFound, HttpResponse
+from .forms import UserForm
 
 # Create your views here.
 def home(request):
+
     return render(request, "home.html")
+
+def login(request):
+    if request.method == "POST":
+        userform = UserForm(request.POST)
+        if userform.is_valid():
+            # username = userform.cleaned_data["username"]
+            # password = userform.cleaned_data["password"]
+            messages.success(request, "Вы успешно авторизованы!")
+            return redirect("success_login")
+    else:
+        userform = UserForm()
+    context = {"form": userform}
+    return render(request, "login.html", context=context)
+
+def success_login(request):
+    return render(request, "success_login.html")
 
 def references(request):
     github_ref = "https://github.com/kitsune5630"
