@@ -1,0 +1,15 @@
+/* 1. Растягиваем body на весь экран */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+/* 2. Делаем body колонкой */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Минимальная высота — весь экран */
+}
+
+
+

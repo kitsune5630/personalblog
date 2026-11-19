@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Personal blog{% endblock title %}</title>
-    <!-- {% block extra_css %}{% endblock %} -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/layout.css' %}">
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
     <header class="topbarmenu">

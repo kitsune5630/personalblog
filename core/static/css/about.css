@@ -1,0 +1,52 @@
+/* Для about.html (весь контент) */
+.content {
+    padding: 20px 30px; /* сверху/снизу и слева/справа */
+    font-size: 1.1rem;
+}
+
+.profile-header {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start; /* Выравнивание по верхнему краю */
+    margin-bottom: 30px;
+}
+
+.profile-image img {
+    width: 200px;
+    height: auto;
+    border-radius: 8px; /* Скругление углов (опционально) */
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Расстояние между строками */
+}
+
+.profile-info p {
+    margin: 0; /* Убираем стандартные отступы у <p> */
+}
+
+/* 3. Стиль для блока образования */
+.education-header {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.education-image img {
+    width: 200px; /* или 300px, как у вас было */
+    height: auto;
+    border-radius: 8px;
+}
+
+.education-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.education-info p {
+    margin: 0;
+}
