@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Пост №{% endblock title %}
+
+{% block extra_css %}
+{% load static %}
+    {# <link rel="stylesheet" href="{% static css/post.css %}"> #}
+{% endblock extra_css %}
+
+{% block content %}
+<h1>Пост №</h1>
+<h2>{{ post.article }}</h2>
+<p>{{ post.author }} -- {{ post.date }}</p>
+<div>{{ post.text }}</div>
+{% endblock content %}
