@@ -23,5 +23,7 @@ urlpatterns = [
     path("references/", views.references, name='references'),
     path("about/", views.about, name='about'),
     path("login/", views.login, name='login'),
-    path("login/success_login/", views.success_login, name='success_login')
+    path("login/success/", views.success_login, name='success_login'),
+    path("registration/", views.registration, name="registration"),
+    path("registration/success/", views.success_registration, name='success_registration'),
 ]

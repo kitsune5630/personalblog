@@ -18,7 +18,7 @@
         <p>Отчество: {{ surname }}</p>
         <p>Контактная информация</p>
         <p>Телеграм: <a href="{{ contact_info.telegram_url }}">{{ contact_info.telegram }}</a></p>
-        <p>Электронная почта: {{ contact_info.mail }}</p>
+        <p>Электронная почта: {% include "includes/proton-icon.html" %}{{ contact_info.mail }}</p>
     </div>
 </div>
 <div class="profile-details">

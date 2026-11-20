@@ -4,6 +4,7 @@
     font-size: 1.1rem;
 }
 
+/* Для профиля разделение */
 .profile-header {
     display: flex;
     gap: 20px;
@@ -27,7 +28,7 @@
     margin: 0; /* Убираем стандартные отступы у <p> */
 }
 
-/* 3. Стиль для блока образования */
+/* Для образования разделение */
 .education-header {
     display: flex;
     gap: 20px;
@@ -49,4 +50,18 @@
 
 .education-info p {
     margin: 0;
+}
+
+/* Иконочка протона */
+.proton-icon {
+    width: 20px;
+    height: 20px;
+    fill: #111 ;   /* иконка берёт цвет текста */
+    vertical-align: middle; /* выравнивание по тексту */
+    margin-right: 5px;
+}
+
+/* В тёмной теме */
+body.dark-theme .proton-icon {
+    fill: #fff;
 }
