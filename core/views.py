@@ -9,7 +9,41 @@ def home(request):
     Поведение при запроса начальной (главной) страницы
     На данный момент заглушка (пустая)
     """
-    return render(request, "home.html")
+    posts = [
+        {
+            "article": "Название 1",
+            "date": "01.01.2001",
+            "author": "Ivan Ivanov",
+            "text": "Minim reprehenderit labore veniam dolor commodo anim adipisicing sint nostrud in."
+        },
+        {
+            "article": "Название 2",
+            "date": "02.01.2001",
+            "author": "Ivan Ivanov",
+            "text": "Minim reprehenderit labore veniam dolor commodo anim adipisicing sint nostrud in."
+        },
+    ]
+
+    context = {
+        "posts" : posts[:2]
+    }
+    return render(request, "home.html", context=context)
+
+def post_detail(request):
+    """
+    Временная заглушка-шаблон до бд
+    """
+    post = {
+        "article": "Название 1",
+        "date": "01.01.2001",
+        "author": "Ivan Ivanov",
+        "text": "Minim reprehenderit labore veniam dolor commodo anim adipisicing sint nostrud in."
+    }
+
+    context = {
+        "post": post
+    }
+    return render(request, "post.html", context=context)
 
 def registration(request):
     """
