@@ -1,4 +1,5 @@
 from django import forms
+from .models import UserModel
 
 # put there code for html django structure
 class UserForm(forms.Form):
@@ -24,3 +25,15 @@ class UserRegistrationForm(forms.Form):
         max_length=100, min_length=5,
         required=False, label="Почта",
     )
+
+    def clean_username(self):
+        username = self.cleaned_data["username"].strip()
+        if UserModel.objects.filter(username=username).exists():
+            raise forms.ValidationError("Этот юзер занят")
+        return username
+
+    def clean_email(self):
+        email = self.cleaned_data.get("email", "").strip()
+        if email and UserModel.objects.filter(email=email).exists():
+            raise forms.ValidationError("Этот почта занят")
+        return email

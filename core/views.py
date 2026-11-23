@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.http import HttpResponse
 from .forms import UserForm, UserRegistrationForm
+from .models import UserModel, PostsModel
 
 # Create your views here.
 def home(request):
@@ -53,6 +53,10 @@ def registration(request):
     if request.method == "POST":
         user_registrationform = UserRegistrationForm(request.POST)
         if user_registrationform.is_valid():
+            username = user_registrationform.cleaned_data["username"]
+            password = user_registrationform.cleaned_data["password"]
+            email = user_registrationform.cleaned_data["email"]
+            UserModel.objects.create(username=username, password=password, email=email)
             messages.success(request, "Вы успешно зарегистрированы")
             return redirect("success_registration")
     else:
