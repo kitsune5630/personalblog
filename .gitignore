@@ -4,3 +4,5 @@ __pycache__/
 node_modules/
 *.pyc
 *.py[cod]
+venv_314
+venv_315

@@ -3,11 +3,30 @@
 {% block title %}Регистрация{% endblock title %}
 
 {% block content %}
-<form method="POST">
+<form method="POST" novalidate>
     {% csrf_token %}
-    <table>
-        {{ form.as_table }}
-    </table>
+    {% if form.non_field_errors %}
+        <ul class="errorlist nonfield">
+            {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <p>
+        {{ form.username.label_tag }} <br>
+        {{ form.username }} 
+        {{ form.username.errors }}
+    </p>
+    <p>
+        {{ form.password.label_tag }} <br>
+        {{ form.password }} 
+        {{ form.password.errors }}
+    </p>
+    <p>
+        {{ form.email.label_tag }} <br>
+        {{ form.email }} 
+        {{ form.email.errors }}
+    </p>
     <input type="submit" value="Send">
 </form>
 {% endblock content %}
