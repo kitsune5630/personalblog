@@ -33,6 +33,9 @@ def home(request):
     return render(request, "home.html", context=context)
 
 def posts(request):
+    """
+    Заглушка для страницы с постами
+    """
     return render(request, "posts.html")
 
 def post_detail(request):
@@ -50,6 +53,12 @@ def post_detail(request):
         "post": post
     }
     return render(request, "post.html", context=context)
+
+def post_create(request):
+    """
+    Заготовка для создания поста
+    """
+    return render(request, "post_create.html")
 
 def registration(request):
     """
