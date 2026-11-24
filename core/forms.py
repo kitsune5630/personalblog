@@ -1,11 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 
-class CustomLoginForm(AuthenticationForm):
-    error_messages = {
-        'invalid_login': 'Неверный логин или пароль.'
-    }
-
 class UserRegistrationForm(forms.Form):
     username = forms.CharField(
         max_length=25, min_length=5,
@@ -32,6 +27,11 @@ class UserRegistrationForm(forms.Form):
     #     if email and UserModel.objects.filter(email=email).exists():
     #         raise forms.ValidationError("Этот почта занят")
     #     return email
+
+# class CustomLoginForm(AuthenticationForm):
+#     error_messages = {
+#         'invalid_login': 'Неверный логин или пароль.'
+#     }
 
 # class UserForm(forms.Form):
 #     username = forms.CharField(
