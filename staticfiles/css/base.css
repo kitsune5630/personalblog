@@ -1,0 +1,13 @@
+/* растяжка body на весь экран */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+/* в виде колонки */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* минимальная высота — весь экран */
+}
+

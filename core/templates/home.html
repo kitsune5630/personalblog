@@ -2,24 +2,12 @@
 
 {% block title %}Home Page {% endblock title %}
 
-{% block extra_css %}
-{% load static %}
-    <link rel="stylesheet" href="{% static 'css/home.css' %}">
-{% endblock extra_css %}
-
 {% block content %}
-
-<h1>Последние посты:</h1>
-{% for post in posts %}
-    <article class="post-preview">
-        <h2>{{ post.article }}</h2>
-        <p class="meta">{{ post.author }} --- {{ post.date }}</p>
-        <p>{{ post.text|truncatechars:30 }}</p>
-        <a href="/post/1">Читать</a>
-        {# <a href="{% url 'post_detail' pk=post.id %}">Читать</a> #}
-    </article>
-{% empty %}
-    <p>Пусто и груcтно</p>
-{% endfor %}
-
+<p>Добро пожаловать в <em>Блог</em>. Вот и все.</p>
+<h2>Содержимое</h2>
+<p>У нас тут находится:</p>
+<ul>
+    <li><strong>Пользователей: </strong>{{ count_users }} </li>
+    <li><strong>Постов: </strong>{{ count_posts }}</li>
+</ul>
 {% endblock content %}

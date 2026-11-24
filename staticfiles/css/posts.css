@@ -1,0 +1,12 @@
+.post-preview {
+    border-bottom: 1px solid #ddd;
+    padding: 15px 0;
+}
+.post-preview h2 {
+    margin: 0 0 5px;
+}
+.post-preview .meta {
+    color: #777;
+    font-size: 0.9rem;
+    margin: 0 0 10px;
+}
