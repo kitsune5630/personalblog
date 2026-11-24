@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Вход{% endblock title %}
+
+{% block content %}
+
+{% if form.errors %}
+    <p>Your username and password didn't match. Удачи.</p>
+{% endif %}
+
+{% if user.is_authenticated %}
+    <p>Ни-ни, ты уже вошел</p>
+    <p><a href="/">На главную</a></p>
+{% else %}
+    <form method="POST" action="{% url 'login' %}">
+    {% csrf_token %}
+    <table>
+        <tr>
+            <td>    
+                {{ form.username.label_tag }} <br>
+                {{ form.username }} 
+                {{ form.username.errors }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+            {{ form.password.label_tag }} <br>
+            {{ form.password }} 
+            {{ form.password.errors }}
+            </td>
+        </tr>
+    </table>
+    <input type="submit" value="Send">
+    </form>
+    {# <p><a href="{% url 'password_reset' %}">Lost password?</a></p> #}
+{% endif %}
+{% endblock content %}

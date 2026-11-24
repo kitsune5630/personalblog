@@ -19,13 +19,16 @@ from django.urls import path, include
 from core import views
 
 urlpatterns = [
+    path("admin/", admin.site.urls), 
     path("", views.home, name='home'),
+    path('accounts/login', views.login, name='login'),
+    path('accounts/', include('django.contrib.auth.urls')),
     path("references/", views.references, name='references'),
     path("about/", views.about, name='about'),
-    path("login/", views.login, name='login'),
+    # path("login/", views.login, name='login'),
     path("login/success/", views.success_login, name='success_login'),
     path("registration/", views.registration, name="registration"),
     path("registration/success/", views.success_registration, name='success_registration'),
     path("post/1/", views.post_detail, name="post_detail"),
-    
+    path("posts/", views.posts, name='posts'),
 ]

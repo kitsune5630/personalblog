@@ -1,0 +1,16 @@
+/* контент занимает всё свободное место */
+.layout {
+    flex: 1; /* прижмёт футер к низу */
+}
+
+/* Шапка и футер не сжимаются */
+
+.topbarmenu {
+    flex-shrink: 0;
+    padding: 10px 20px;
+}
+
+.footer {
+    flex-shrink: 0;
+    padding: 15px 20px;
+}

@@ -3,8 +3,10 @@
 {% block title %}Успешно Авторизация!{% endblock title %}
 
 {% block content %}
-{% for m in messages %}<p>{{ m }}</p>{% endfor %}
+
+{# {% for m in messages %}<p>{{ m }}</p>{% endfor %} #}
+
+<p>Добро пожаловать, {{ user.username }}</p>
 <p><a href="/">На главную</a></p>
-<!-- <p>Ваше имя: {{ username }}</p>
-<p>Ваш пароль: {{ password }}</p> -->
+
 {% endblock content %}

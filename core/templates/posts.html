@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Посты{% endblock title %}
+
+{% block extra_css %}
+{% load static %}
+    <link rel="stylesheet" href="{% static 'css/posts.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+
+<h1>Последние посты:</h1>
+{% for post in posts %}
+    <article class="post-preview">
+        <h2>{{ post.article }}</h2>
+        <p class="meta">{{ post.author }} --- {{ post.created_at }}</p>
+        <p>{{ post.text|truncatechars:30 }}</p>
+        <a href="/post/1">Читать</a>
+        {# <a href="{% url 'post_detail' pk=post.id %}">Читать</a> #}
+    </article>
+{% empty %}
+    <p>Пусто и груcтно</p>
+{% endfor %}
+
+{% endblock content %}
+

@@ -1,6 +1,6 @@
-<div><a href="/"?>Главная</a> 
+<div><a href="/"?>Главная</a>
+    | <a href="{% url 'posts' %}">Посты</a> 
     | <a href="{% url 'references' %}">Ссылки</a> 
     | <a href="{% url 'about' %}">Информация</a>
-    | <a href="{% url 'login' %}">Вход</a>
-    | <a href="{% url 'registration' %}">Регистрация</a>
+    {% include "includes/authenticated_user.html" %}
 </div>
