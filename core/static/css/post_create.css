@@ -1,0 +1,31 @@
+/* Общие стили для полей внутри формы */
+.post-form input[type="text"],
+.post-form textarea {
+    width: 100%;             /* Растянуть на всю ширину */
+    box-sizing: border-box;  /* Чтобы padding не увеличивал ширину */
+    padding: 10px;           /* Внутренние отступы */
+    border: 1px solid #ccc;  /* Рамка */
+    border-radius: 5px;      /* Скругление */
+    font-family: inherit;    /* Шрифт как у сайта */
+    font-size: 1rem;
+    background-color: #2b2b2b; /* Темный фон (под ваш скрин) */
+    color: #fff;             /* Белый текст */
+}
+
+/* Конкретно для title (плоский и невысокий) */
+.post-form input[type="text"] {
+    height: 40px;            /* Фиксированная высота */
+}
+
+/* Конкретно для text (большой прямоугольник) */
+.post-form textarea {
+    height: 200px;           /* Большая высота */
+    resize: vertical;        /* Пользователь может тянуть вниз */
+}
+
+/* Стили для label */
+.post-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}

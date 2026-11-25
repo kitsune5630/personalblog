@@ -12,21 +12,15 @@
             {% endfor %}
         </ul>
     {% endif %}
+    {% for field in form %}
     <p>
-        {{ form.username.label_tag }} <br>
-        {{ form.username }} 
-        {{ form.username.errors }}
+        {{ field.label_tag }} <br>
+        {{ field }} 
+        {{ field.errors }}
     </p>
-    <p>
-        {{ form.password.label_tag }} <br>
-        {{ form.password }} 
-        {{ form.password.errors }}
-    </p>
-    <p>
-        {{ form.email.label_tag }} <br>
-        {{ form.email }} 
-        {{ form.email.errors }}
-    </p>
+    {% empty %}
+    Что то не так
+    {% endfor %}
     <input type="submit" value="Send">
 </form>
 {% endblock content %}

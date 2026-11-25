@@ -8,8 +8,9 @@
 {% endblock extra_css %}
 
 {% block content %}
-<h1>Пост №</h1>
+<h1>Пост № {{ post.id }}</h1>
 <h2>{{ post.article }}</h2>
-<p>{{ post.author }} -- {{ post.date }}</p>
+<p>{{ post.author }} -- {{ post.created_at }}</p>
 <div>{{ post.text }}</div>
+<p><a href="{{ request.META.HTTP_REFERER|default:'/'}}">Назад</a></p>
 {% endblock content %}
