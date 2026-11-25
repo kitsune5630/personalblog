@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Создание поста{% endblock title %}
+
+{% block extra_css %}
+{% load static %}
+    <link rel="stylesheet" href="{% static 'css/post_create.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+{% if not user.is_authenticated %}
+    <p>Перед созданием поста необходимо залогиниться!</p>
+    <p><a href="{% url 'login' %}">Выполнить вход</a></p>
+{% else %}
+    <form method="POST" novalidate class="post_form">
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+            <ul class="errorlist nonfield">
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <table>
+            <tr>
+                <td>
+                    {{ form.title.label_tag }} <br>
+                    {{ form.title }}
+                    {{ form.title.errors }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {{ form.text.label_tag }} <br>
+                    {{ form.text }}
+                    {{ form.text.errors }}
+                </td>
+            </tr>
+        </table>
+        <input type="submit" value="Send">
+    </form>
+{% endif %}
+{% endblock content %}

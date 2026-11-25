@@ -2,5 +2,6 @@
     | <a href="{% url 'posts' %}">Посты</a> 
     | <a href="{% url 'references' %}">Ссылки</a> 
     | <a href="{% url 'about' %}">Информация</a>
-    {% include "includes/authenticated_user.html" %}
+    {% include "includes/authenticated_user.html" %}<br>
+    <a href="{% url 'post_create' %}">Создать пост</a>
 </div>
