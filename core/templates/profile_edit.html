@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Редактирование профиля{% endblock title %}
+{% load static %}
+    <link rel="stylesheet" href="{% static 'css/profile_create.css' %}">
+{% endblock extra_css %}
+{% block content %}
+<form method="POST" novalidate class="post_form">
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+        <ul class="errorlist nonfield">
+            {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <table>
+        {% if profile_form.phone_number %}
+        <tr><td>
+                {% include "includes/form_template.html" with field=profile_form.phone_number %}
+        </td></tr>
+        {% endif %}
+        {% if profile_form.telegram %}
+        <tr><td>
+                {% include "includes/form_template.html" with field=profile_form.telegram %}
+            </td></tr>
+        {% endif %}
+        {% if profile_form.about_self %}
+        <tr><td>
+                {% include "includes/form_template.html" with field=profile_form.about_self %}
+            </td></tr>
+        {% endif %}
+    </table>
+    <input type="submit" value="Send">
+</form>
+{% endblock content %}

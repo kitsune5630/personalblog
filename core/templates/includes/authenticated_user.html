@@ -1,5 +1,5 @@
 {% if user.is_authenticated %}
-    | <span>Привет, {{ user.username }}!</span>
+    | <span>Привет, <a href="{% url 'profile_user' slug=user.profile.slug %}">{{ user.username }}!</a></span>
     <form method="post" action="{% url 'logout' %}" style="display:inline;">
         {% csrf_token %}
         <button type="submit">Выход</button>

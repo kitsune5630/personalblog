@@ -40,6 +40,7 @@ class CustomAuthenticationForm(AuthenticationForm):
     )
 
 class PostCreationForm(forms.Form):
+
     """
     Форма для создания поста
     """
@@ -51,5 +52,22 @@ class PostCreationForm(forms.Form):
     text = forms.CharField(
         max_length = 1000, min_length=10,
         label="Пост", help_text="Введите текст поста",
+        widget=forms.Textarea,
+    )
+
+class ProfileCreationForm(forms.Form):
+    phone_number = forms.CharField(
+        max_length=20, label="Номер телефона",
+        help_text="Введите номер телефона", required=False,
+        widget=forms.TextInput,
+    )
+    telegram = forms.CharField(
+        max_length=20, label="Телеграм",
+        help_text="Введите телеграм", required=False,
+        widget=forms.TextInput,
+    )
+    about_self = forms.CharField(
+        max_length=1000, label="О себе",
+        help_text="Напишите о себе", required=False, 
         widget=forms.Textarea,
     )

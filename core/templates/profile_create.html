@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Создание профиля{% endblock title %}
+
+{% comment %}
+{% block extra_css %} 
+{% load static %}
+    <link rel="stylesheet" href="{% static 'css/profile_create.css' %}">
+{% endblock extra_css %}
+{% endcomment %}
+
+{% block content %}
+<form method="POST" novalidate class="profile-form">
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+        <ul class="errorlist nonfield">
+            {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <table>
+        {% for field in profile_form %}
+            {% if field %}
+            <tr>
+                <td>
+                    {% include "includes/form_template.html" with field=field %}
+                </td>
+            </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+    <input type="submit" value="Send">
+</form>
+{% endblock content %}
