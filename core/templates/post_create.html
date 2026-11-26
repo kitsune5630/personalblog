@@ -2,10 +2,12 @@
 
 {% block title %}Создание поста{% endblock title %}
 
+{% comment %}
 {% block extra_css %}
 {% load static %}
     <link rel="stylesheet" href="{% static 'css/post_create.css' %}">
 {% endblock extra_css %}
+{% endcomment %}
 
 {% block content %}
 {% if not user.is_authenticated %}
@@ -22,20 +24,13 @@
             </ul>
         {% endif %}
         <table>
+            {% for field in form %}
             <tr>
                 <td>
-                    {{ form.title.label_tag }} <br>
-                    {{ form.title }}
-                    {{ form.title.errors }}
+                    {% include "includes/form_template.html" with field=field %}
                 </td>
             </tr>
-            <tr>
-                <td>
-                    {{ form.text.label_tag }} <br>
-                    {{ form.text }}
-                    {{ form.text.errors }}
-                </td>
-            </tr>
+            {% endfor %}
         </table>
         <input type="submit" value="Send">
     </form>

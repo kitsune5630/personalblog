@@ -1,18 +1,62 @@
 from django.db import models
 from django.utils.text import slugify
+from django.contrib.auth.models import User
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 # put there for auto html generation plus db generation
 
 class PostsModel(models.Model):
+    """
+    Модель профиля пользователя
+    params:
+    title - заголовок
+    slug - кастом пусть (profile/<custom>/)
+    text - текст поста
+    created_at - когда создано (автодобавление - сейчас)
+    author - (ФК)
+    """
     title = models.CharField(max_length=100, unique=False)
-    slug = models.SlugField(max_length=100, unique=True, blank=True)
+    slug = models.SlugField(max_length=100, unique=True, blank=True, null=True)
     text = models.TextField(max_length=1000)
     created_at = models.DateTimeField(auto_now_add=True)
-    author = models.CharField(max_length=100)
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
-    
 
+# class CustomUserModel(AbstractUser):
+#     slug = models.SlugField(max_length=100, unique=True, blank=True)
+#     phone_number = models.SlugField(max_length=20, blank=True, null=True)
+
+#     def __str__(self):
+#         return self.username
+
+class ProfileModel(models.Model):
+    """
+    Модель профиля пользователя
+    params:
+    user - пользователь (1к1)
+    slug - кастом пусть (profile/<custom>/)
+    phone_number - телефон
+    telegram - тг
+    about_self - о себе
+    """
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile", verbose_name="Профиль")
+    slug = models.SlugField(max_length=100, unique=True, blank=True, null=True)
+    phone_number = models.CharField(max_length=20, blank=True, null=True)
+    telegram = models.CharField(max_length=20, blank=True, null=True)
+    about_self = models.CharField(max_length=100, blank=True, null=True)
+    
+    def save(self, *args, **kwargs):
+            if not self.slug:
+                self.slug = slugify(self.user.username)
+            super().save(*args, **kwargs)
+
+# автосоздание пустого профиля
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        ProfileModel.objects.create(user=instance)

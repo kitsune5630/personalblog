@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
-from .forms import CustomAuthenticationForm, PostCreationForm, CustomUserCreationform
-from .models import PostsModel
+from .forms import CustomAuthenticationForm, PostCreationForm, CustomUserCreationform, ProfileCreationForm
+from .models import PostsModel, ProfileModel
 from django.core.paginator import Paginator
 
 # Create your views here.
@@ -12,13 +12,47 @@ def home(request):
     Поведение при запроса начальной (главной) страницы
     На данный момент заглушка (пустая)
     """
-
-    # позже поменять на подсчет из бд
     context = {
         "count_users": User.objects.count(),
         "count_posts": PostsModel.objects.count(),
     }
     return render(request, "home.html", context=context)
+
+def profile_edit(request):
+    """
+    Создание профиля пользователя
+    """
+    # if hasattr(request.user, 'profile'):
+    #     return redirect('home')
+    profile = request.user.profile
+    if request.method == "POST":
+        profile_form = ProfileCreationForm(request.POST)
+        if profile_form.is_valid():
+            # если models.ModelForm
+            # profile = profile_form.save(commit=False)
+            # profile.user = request.user
+            # profile.save()
+            profile.phone_number = profile_form.cleaned_data["phone_number"]
+            profile.telegram = profile_form.cleaned_data["telegram"]
+            profile.about_self = profile_form.cleaned_data["about_self"]
+            profile.save()
+            return redirect("profile_user", slug=profile.slug)
+    else:
+        initial_data = {
+            'phone_number': profile.phone_number,
+            'telegram': profile.telegram,
+            'about_self': profile.about_self,
+        }
+        profile_form = ProfileCreationForm(initial=initial_data)
+    return render(request, "profile_create.html", {"profile_form": profile_form})
+
+def profile_user(request, slug):
+    """
+    Профиль пользователя
+    """
+    profile = get_object_or_404(ProfileModel, slug=slug)
+    user = profile.user
+    return render(request, "profile_user.html", {"user": user, "profile": profile})
 
 def posts(request):
     """
@@ -38,17 +72,6 @@ def post_detail(request, slug):
     post = get_object_or_404(PostsModel, slug=slug)
     return render(request, "post_detail.html", {"post": post})
 
-# def post_detail(request, pk):
-#     """
-#     Детали поста
-#     """
-#     post = get_object_or_404(PostsModel, id=pk)
-
-#     context = {
-#         "post": post
-#     }
-#     return render(request, "post_detail.html", context=context)
-
 def post_create(request):
     """
     Создание поста
@@ -58,7 +81,7 @@ def post_create(request):
         if post_createform.is_valid():
             title = post_createform.cleaned_data["title"]
             text = post_createform.cleaned_data["text"]
-            author = request.user.username
+            author = request.user
             PostsModel.objects.create(
                 title=title, text=text, author=author
             )
@@ -85,8 +108,7 @@ def registration(request):
         if user_registrationform.is_valid():
             user = user_registrationform.save()
             login(request, user)
-            messages.success(request, "Вы успешно зарегистрированы")
-            return redirect("success_registration")
+            return redirect("profile_edit")
     else:
         user_registrationform = CustomUserCreationform()
     context = {"form": user_registrationform}

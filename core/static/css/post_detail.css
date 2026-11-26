@@ -1,0 +1,5 @@
+h1, h2, p, div {
+    overflow-wrap: break-word; /* Разрешает перенос длинных слов */
+    word-wrap: break-word;     /* То же самое для старых браузеров */
+    word-break: break-word;    /* Дополнительная страховка */
+}

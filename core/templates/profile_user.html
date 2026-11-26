@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Профиль пользователя{% endblock title %}
+
+{% block content %}
+<h1>Профиль пользователя {{ user.username }}</h1>
+<p>Почта: {{ user.email }}</p>
+{% if profile.phone_number %}
+<p>Телефон: {{ profile.phone_number }}</p>
+{% endif %}
+{% if profile.telegram %}
+<p>Телеграм: {{ profile.telegram }}</p>
+{% endif %}
+{% if profile.about_self %}
+<p>О себе: {{ profile.about_self }}</p>
+{% endif %}
+<p><a href="{% url 'profile_edit' %}">Редактировать</a></p>
+{% endblock content %}
