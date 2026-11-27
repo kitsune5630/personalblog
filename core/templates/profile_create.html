@@ -12,13 +12,7 @@
 {% block content %}
 <form method="POST" novalidate class="profile-form">
     {% csrf_token %}
-    {% if form.non_field_errors %}
-        <ul class="errorlist nonfield">
-            {% for error in form.non_field_errors %}
-                <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+    {% include 'includes/non_field_errors.html' %}
     <table>
         {% for field in profile_form %}
             {% if field %}

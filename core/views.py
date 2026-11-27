@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
-from .forms import CustomAuthenticationForm, PostCreationForm, CustomUserCreationform, ProfileCreationForm
-from .models import PostsModel, ProfileModel
+from .forms import CustomAuthenticationForm, PostCreationForm, CustomUserCreationform, ProfileCreationForm, CommentForm
+from .models import PostsModel, ProfileModel, CommentModel
 from django.core.paginator import Paginator
 
 # Create your views here.
@@ -44,7 +44,7 @@ def profile_edit(request):
             'about_self': profile.about_self,
         }
         profile_form = ProfileCreationForm(initial=initial_data)
-    return render(request, "profile_create.html", {"profile_form": profile_form})
+    return render(request, "profile_edit.html", {"profile_form": profile_form})
 
 def profile_user(request, slug):
     """
@@ -70,7 +70,23 @@ def post_detail(request, slug):
     Детали поста
     """
     post = get_object_or_404(PostsModel, slug=slug)
-    return render(request, "post_detail.html", {"post": post})
+    comments = post.comments.all().order_by('created_at')
+    if request.method == "POST":
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.post = post
+            comment.author = request.user
+            comment.save()
+            return redirect("post_detail", slug=slug)
+    else:
+        comment_form = CommentForm()
+    context = {
+        "post": post, "comments": comments, "comment_form":comment_form
+    }
+    return render(request, "post_detail.html", context=context)
+
+    #return render(request, "post_detail.html", {"post": post})
 
 def post_create(request):
     """

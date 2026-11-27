@@ -8,13 +8,7 @@
 {% else %}
 <form method="POST" novalidate>
     {% csrf_token %}
-    {% if form.non_field_errors %}
-        <ul class="errorlist nonfield">
-            {% for error in form.non_field_errors %}
-                <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+    {% include 'includes/non_field_errors.html' %}
     {% for field in form %}
     <p>
         {% include "includes/form_template.html" with field=field %}

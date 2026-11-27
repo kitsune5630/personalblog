@@ -8,9 +8,38 @@
 {% endblock extra_css %}
 
 {% block content %}
-<h1>Пост № {{ post.id }}</h1>
-<h2>{{ post.title }}</h2>
-<p>{{ post.author }} -- {{ post.created_at }}</p>
+<h1>{{ post.title }}</h1>
+<p>Автор: 
+    {% if post.author.profile %}
+    <a href="{% url 'profile_user' slug=post.author.profile.slug %}">{{ post.author }}</a>
+    {% else %}
+    {{ post.author }}
+    {% endif %}
+</p>
+<p>Дата создания: {{ post.created_at|date:"d.m.Y H:i" }}</p>
+<p>Описание:</p>
 <div class="post-text">{{ post.text }}</div>
-<p><a href="{{ request.META.HTTP_REFERER|default:'/'}}">Назад</a></p>
+
+<p>Все комментарии</p>
+{% for comment in comments %}
+    <div class="comment">
+        <strong>{{ comment.author.username|default:"Anon" }}</strong>
+        <small>{{ comment.created_at|date:"d.m.Y H:i" }}</small>
+        <p>{{ comment.text }}</p>
+    </div>
+{% empty %}
+<p>Здесь пока что пусто :С</p>
+{% endfor %}
+
+{% if user.is_authenticated %}
+    <form method="POST">
+        {% csrf_token %}
+        Ваш комментарий:<br>
+        {{ comment_form.text }}
+        <input type="submit" value="send">
+    </form>
+{% else %}
+    <p>Войдите, чтобы написать комментарий</p>
+{% endif %}
+
 {% endblock content %}

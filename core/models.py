@@ -27,12 +27,27 @@ class PostsModel(models.Model):
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
 
-# class CustomUserModel(AbstractUser):
-#     slug = models.SlugField(max_length=100, unique=True, blank=True)
-#     phone_number = models.SlugField(max_length=20, blank=True, null=True)
+    def __str__(self):
+        try:
+            author_name = self.author.username if self.author else "Anon"
+        except User.DoesNotExist:
+            author_name = "Anon (deleted)"
+        title = self.title if self.title else "Unknown"
+        return f'Пост {self.id} от {author_name}'
 
-#     def __str__(self):
-#         return self.username
+class CommentModel(models.Model):
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="comments")
+    post = models.ForeignKey(PostsModel, on_delete=models.CASCADE, null=True, related_name="comments")
+    text = models.CharField(max_length=1000, blank=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        try:
+            author_name = self.author.username if self.author else "Anon"
+        except User.DoesNotExist:
+            author_name = "Anon (deleted)"
+        post_title = self.post.title if self.post else "Unknown"
+        return f"Комментарий от {author_name} к посту {post_title}"
 
 class ProfileModel(models.Model):
     """
@@ -51,12 +66,28 @@ class ProfileModel(models.Model):
     about_self = models.CharField(max_length=100, blank=True, null=True)
     
     def save(self, *args, **kwargs):
-            if not self.slug:
-                self.slug = slugify(self.user.username)
-            super().save(*args, **kwargs)
+        if not self.slug:
+            self.slug = slugify(self.user.username)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        try:
+            author_name = self.user.username if self.user else "Anon"
+        except User.DoesNotExist:
+            author_name = "Anon (deleted)"
+        return f'Профиль {author_name}, id = {self.user.id}'
 
 # автосоздание пустого профиля
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         ProfileModel.objects.create(user=instance)
+
+# class CustomUserModel(AbstractUser):
+#     slug = models.SlugField(max_length=100, unique=True, blank=True)
+#     phone_number = models.SlugField(max_length=20, blank=True, null=True)
+
+#     def __str__(self):
+#         return self.username
+
+# <p><a href="{{ request.META.HTTP_REFERER|default:'/'}}">Назад</a></p>

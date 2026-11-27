@@ -15,18 +15,10 @@
     <form method="POST" action="{% url 'login' %}">
     {% csrf_token %}
     <table>
+        {% for field in form %}
         <tr>
             <td>    
-                {{ form.username.label_tag }} <br>
-                {{ form.username }} 
-                {{ form.username.errors }}
-            </td>
-        </tr>
-        <tr>
-            <td>
-            {{ form.password.label_tag }} <br>
-            {{ form.password }} 
-            {{ form.password.errors }}
+                {% include "includes/form_template.html" with field=field %}
             </td>
         </tr>
     </table>
