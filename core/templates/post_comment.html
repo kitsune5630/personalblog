@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Пост №{% endblock title %}
+
+{% comment %}
+{% block extra_css %}
+{% load static %}
+    <link rel="stylesheet" href="{% static 'css/post_detail.css' %}">
+{% endblock extra_css %}
+{% endcomment %}
+
+
+{% block content %}
+{% if not user.is_authenticated %}
+    <p>Чтобы остановить комментарий, необходимо залогиниться!</p>
+    <p><a href="{% url 'login' %}">Выполнить вход</a></p>
+{% else %}
+    <form method="POST" class="comment-form" novalidate>
+        {% csrf_token %}
+        {% include 'includes/non_field_errors.html' %}
+        <table>
+            <p>Напишите ваш комментарий:</p>
+            <p>{{ comment_form.label }}</p>
+            <p>{{ comment_form.text }}</p>
+            <p>{{ comment_form.errors }}</p>
+        </table>
+        <input type="submit" value="send">
+    </form>
+{% endif %}
+{% endblock content %}

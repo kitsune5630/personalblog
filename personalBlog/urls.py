@@ -31,16 +31,23 @@ urlpatterns = [
     path("signup/", views.registration, name="registration"),
     
     path("signup/success/", views.success_registration, name='success_registration'),
+
     # страница с постами + сам пост + создание поста
     path("posts/", views.posts, name='posts'),
     path("post/create/", views.post_create, name="post_create"),
     path("post/success_post_create/", views.success_post_create, name="success_post_create"),
+
+    # # комменты - привязано к посту, под постом
+    # path("post/<slug:slug>/comment/", views.post_comment, name="post_comment"), 
+    # путь к посту с именем (заголовок поста, пока онли англ. -> переделать на все языки)
     # path("post/<int:pk>/", views.post_detail, name="post_detail"),
+
     path("post/<slug:slug>/", views.post_detail, name="post_detail"),
     # профиль пользователя
     # path("profile/<int:pk>/", views.profile_user, name="profile_user"),
     path("profile/edit/", views.profile_edit, name="profile_edit"),
     path("profile/<slug:slug>/", views.profile_user, name="profile_user"),
+    
     # ссылки (заглушка)
     path("references/", views.references, name='references'),
     # обо мне

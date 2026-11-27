@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
+from .models import CommentModel
 
 class CustomUserCreationform(UserCreationForm):
     """
@@ -71,3 +72,12 @@ class ProfileCreationForm(forms.Form):
         help_text="Напишите о себе", required=False, 
         widget=forms.Textarea,
     )
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = CommentModel
+        fields = ['text']
+        widgets = {
+            "text": forms.Textarea(attrs={'rows':3, 'placeholder': 'Ваш комментарий...'}),
+        }
+        labels = {'text': 'комментарий'}
