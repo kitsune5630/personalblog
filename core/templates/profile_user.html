@@ -26,5 +26,5 @@
 {% empty %}
 <p>Пусто и грустно.</p>
 {% endfor %}
-
+<p><a href="{{ request.META.HTTP_REFERER|default:'/'}}">Назад</a></p>
 {% endblock content %}

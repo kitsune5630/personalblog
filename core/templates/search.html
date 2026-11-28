@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Поиск{% endblock title %}
+
+{% comment %}
+{% block extra_css %}
+{% load static %}
+    <link rel="stylesheet" href="{% static 'css/post_create.css' %}">
+{% endblock extra_css %}
+{% endcomment %}
+
+{% block content %}
+
+{% include 'includes/non_field_errors.html' %}
+<form method="GET" action="{% url 'post_search' %}">
+    <table>
+        {% for field in search_form %}
+        <tr><td>
+                {% include "includes/form_template.html" with field=field %}
+            </td></tr>
+        {% endfor %}
+    </table>
+    
+    <br>
+    <button type="submit">Отфильтровать</button>
+    <a href="{% url 'post_search' %}">Сброс</a>
+</form>
+
+{% if results %}
+<p>Результат поиска:</p>
+{% endif %}
+<table>
+    {% for post in results %}
+
+        <tr><td>
+            <a href="{% url 'post_detail' slug=post.slug %}">{{ post.title }}</a>
+        </td></tr>
+    {% empty %}
+    {% endfor %}
+</table>
+
+{% endblock content %}

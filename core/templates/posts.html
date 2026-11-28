@@ -15,9 +15,9 @@
         <h2>{{ post.title }}</h2>
         {% if post.author %}
             {% if post.author.profile %}
-            <p class="meta"><a href="{% url 'profile_user' slug=post.author.profile.slug %}">{{ post.author }}</a> --- {{ post.created_at }}</p>
+                <p class="meta"><a href="{% url 'profile_user' slug=post.author.profile.slug %}">{{ post.author }}</a> --- {{ post.created_at }}</p>
             {% else %}
-            {{ post.author }}
+                {{ post.author }}
             {% endif %}
         {% else %}
         <p class="meta">anon</p>

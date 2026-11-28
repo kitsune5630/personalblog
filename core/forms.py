@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
-from .models import CommentModel
+from .models import CommentModel, PostsModel, TagsModel
 
 class CustomUserCreationform(UserCreationForm):
     """
@@ -48,13 +48,24 @@ class PostCreationForm(forms.Form):
     title = forms.CharField(
         max_length=100, min_length=5,
         label="Заголовок", help_text="Введите заголовок",
-        widget=forms.TextInput, 
+        widget=forms.TextInput
     )
     text = forms.CharField(
         max_length = 1000, min_length=10,
         label="Пост", help_text="Введите текст поста",
         widget=forms.Textarea,
     )
+
+    tags_input = forms.CharField(
+        required=False, 
+        label="Теги", 
+        help_text="Введите теги через пробел или запятую",
+        widget=forms.TextInput(attrs={'placeholder': 'новый тег'})
+    )
+
+    class Meta:
+        model = PostsModel
+        fields = ['title', 'text'] 
 
 class ProfileCreationForm(forms.Form):
     phone_number = forms.CharField(
@@ -81,3 +92,13 @@ class CommentForm(forms.ModelForm):
             "text": forms.Textarea(attrs={'rows':3, 'placeholder': 'Ваш комментарий...'}),
         }
         labels = {'text': 'комментарий'}
+
+class SearchForm(forms.Form):
+    title = forms.CharField(required=False, label="Заголовок")
+    author = forms.CharField(required=False, label="Автор")
+    tag = forms.ModelChoiceField(
+        queryset=TagsModel.objects.all(),
+        required=False, empty_label="ALL tags",
+        label="Теги"
+    )
+    

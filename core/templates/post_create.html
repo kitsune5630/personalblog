@@ -19,11 +19,9 @@
         {% include 'includes/non_field_errors.html' %}
         <table>
             {% for field in form %}
-            <tr>
-                <td>
+            <tr><td>
                     {% include "includes/form_template.html" with field=field %}
-                </td>
-            </tr>
+                </td></tr>
             {% endfor %}
         </table>
         <input type="submit" value="Send">
