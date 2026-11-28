@@ -3,6 +3,7 @@
 {% block title %}Профиль пользователя{% endblock title %}
 
 {% block content %}
+
 <h1>Профиль пользователя {{ user.username }}</h1>
 <p>Почта: {{ user.email }}</p>
 {% if profile.phone_number %}
@@ -12,7 +13,18 @@
 <p>Телеграм: {{ profile.telegram }}</p>
 {% endif %}
 {% if profile.about_self %}
-<p>О себе: {{ profile.about_self }}</p>
+<p>О себе:<br> {{ profile.about_self }}</p>
 {% endif %}
+
+{% if profile.user.username == request.user.username %}
 <p><a href="{% url 'profile_edit' %}">Редактировать</a></p>
+{% endif %}
+
+<p>Посты пользователя:</p>
+{% for post in posts %}
+<p><a href="{% url 'post_detail' slug=post.slug %}">{{ post.title }}</a></p>
+{% empty %}
+<p>Пусто и грустно.</p>
+{% endfor %}
+
 {% endblock content %}

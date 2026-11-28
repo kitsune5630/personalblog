@@ -3,7 +3,7 @@ from django.utils.text import slugify
 from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.db.models.signals import post_save
-
+from transliterate import translit
 # put there for auto html generation plus db generation
 
 class PostsModel(models.Model):
@@ -24,7 +24,16 @@ class PostsModel(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.title)
+            latin_title = translit(self.title, language_code="ru", reversed=True)
+            base_slug = slugify(latin_title)
+
+            slug = base_slug
+            counter = 1
+            while PostsModel.objects.filter(slug=slug).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            self.slug = slug
+            # self.slug = slugify(self.title)
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -67,7 +76,16 @@ class ProfileModel(models.Model):
     
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.user.username)
+            latin_title = translit(self.user.username, language_code="ru", reversed=True)
+            base_slug = slugify(latin_title)
+
+            slug = base_slug
+            counter = 1
+            while ProfileModel.objects.filter(slug=slug).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            self.slug = slug
+            # self.slug = slugify(self.user.username)
         super().save(*args, **kwargs)
 
     def __str__(self):

@@ -1,6 +1,6 @@
 {% if user.is_authenticated %}
     {% if user.profile %}
-    | <span>Привет, <a href="{% url 'profile_user' slug=user.profile.slug %}">{{ user.username }}!</a></span>
+    | <span>Привет, <a href="{% url 'profile_user' slug=request.user.profile.slug %}">{{ request.user.username }}</a>!</span>
     {% else %}
     | <span>Привет, {{ user.username }}</span>
     {% endif %}

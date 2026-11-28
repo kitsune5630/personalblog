@@ -2,9 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
-from .forms import CustomAuthenticationForm, PostCreationForm, CustomUserCreationform, ProfileCreationForm, CommentForm
-from .models import PostsModel, ProfileModel, CommentModel
 from django.core.paginator import Paginator
+from .forms import CustomAuthenticationForm, PostCreationForm, CustomUserCreationform, ProfileCreationForm, CommentForm
+from .models import PostsModel, ProfileModel
+from pathlib import Path
+import json
 
 # Create your views here.
 def home(request):
@@ -32,9 +34,9 @@ def profile_edit(request):
             # profile = profile_form.save(commit=False)
             # profile.user = request.user
             # profile.save()
-            profile.phone_number = profile_form.cleaned_data["phone_number"]
-            profile.telegram = profile_form.cleaned_data["telegram"]
-            profile.about_self = profile_form.cleaned_data["about_self"]
+            profile.phone_number = profile_form.cleaned_data["phone_number"].strip()
+            profile.telegram = profile_form.cleaned_data["telegram"].strip()
+            profile.about_self = profile_form.cleaned_data["about_self"].strip()
             profile.save()
             return redirect("profile_user", slug=profile.slug)
     else:
@@ -44,7 +46,7 @@ def profile_edit(request):
             'about_self': profile.about_self,
         }
         profile_form = ProfileCreationForm(initial=initial_data)
-    return render(request, "profile_edit.html", {"profile_form": profile_form})
+    return render(request, "profile_create.html", {"profile_form": profile_form})
 
 def profile_user(request, slug):
     """
@@ -52,7 +54,11 @@ def profile_user(request, slug):
     """
     profile = get_object_or_404(ProfileModel, slug=slug)
     user = profile.user
-    return render(request, "profile_user.html", {"user": user, "profile": profile})
+    posts = PostsModel.objects.filter(author_id=user.id)
+    context = {
+        "user": user, "profile": profile, "posts": posts
+    }
+    return render(request, "profile_user.html", context=context)
 
 def posts(request):
     """
@@ -88,6 +94,26 @@ def post_detail(request, slug):
 
     #return render(request, "post_detail.html", {"post": post})
 
+def post_edit(request, slug):
+    """
+    Редактирование поста
+    """
+    post = get_object_or_404(PostsModel, slug=slug)
+    if request.method == "POST":
+        post_editform = PostCreationForm(request.POST)
+        if post_editform.is_valid():
+            post.title = post_editform.cleaned_data["title"].strip()
+            post.text = post_editform.cleaned_data["text"].strip()
+            post.save()
+            return redirect("post_detail", slug=slug)
+    else:
+        initial_data = {
+            'title': post.title,
+            'text': post.text,
+        }
+        post_editform = PostCreationForm(initial=initial_data)
+    return render(request, "post_edit.html", {"post_editform": post_editform})
+
 def post_create(request):
     """
     Создание поста
@@ -95,8 +121,8 @@ def post_create(request):
     if request.method == "POST":
         post_createform = PostCreationForm(request.POST)
         if post_createform.is_valid():
-            title = post_createform.cleaned_data["title"]
-            text = post_createform.cleaned_data["text"]
+            title = post_createform.cleaned_data["title"].strip()
+            text = post_createform.cleaned_data["text"].strip()
             author = request.user
             PostsModel.objects.create(
                 title=title, text=text, author=author
@@ -130,17 +156,11 @@ def registration(request):
     context = {"form": user_registrationform}
     return render(request, "registration.html", context=context)
 
-def success_registration(request):
-    """
-    Поведение при успешной регистрации
-    """
-    return render(request, "success_registration.html")
-
 def login_view(request):
     form = CustomAuthenticationForm(data=request.POST or None)
     if request.method == "POST":
         if form.is_valid():
-            username = form.cleaned_data["username"]
+            username = form.cleaned_data["username"].strip()
             password = form.cleaned_data["password"]
             user = authenticate(username=username, password=password)
             if user is not None:
@@ -162,43 +182,10 @@ def success_login(request):
     """
     return render(request, "success_login.html")
 
-def references(request):
-    """
-    Поведение при запросе страницы "Ссылки"
-    """
-    github_ref = "https://github.com/kitsune5630"
-    leetcode_ref = "https://leetcode.com/u/kitsune12345/"
-    data = {
-        'github_ref' : github_ref,
-        'leetcode_ref' : leetcode_ref,
-    }
-    return render(request, "references.html", context=data)
-
 def about(request):
     """
     Поведение запроса страницы "Информация" / "Обо мне" (название пока первое)
     """
-    context = {
-        "personalphoto": "/static/images/personalphoto.png", 
-        "name": "Иван", "lastname": "Иванов", "surname": "Иванович",
-        "skills": [
-            "Python", "Django", "HTML/CSS", 
-            "GIT", "DOCKER", "REST API"
-        ],
-        "projects": [
-            {"title": "Блог", "url": "https://github.com/kitsune5630/personalblog"},
-        ],
-        "education": {
-            "image": "/static/images/Nstu.jpg", 
-            "name": "Новосибирский Государственный Технический Университет",
-            "shortname": "НГТУ",
-            "speciality": "Программное обеспечение компьютерных систем и сетей",
-            "course": "4",
-        },
-        "contact_info": {
-            "telegram": "@kitsune5630",
-            "telegram_url": "https://t.me/kitsune5630",
-            "mail": "kitsune5630@proton.me"
-        }
-    }
+    with open((Path(__file__).parent) / 'static/json/about.json', 'r', encoding="UTF-8") as f:
+        context = json.load(f)
     return render(request, "about.html", context=context)
