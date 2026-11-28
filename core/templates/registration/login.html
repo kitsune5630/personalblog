@@ -21,6 +21,9 @@
                 {% include "includes/form_template.html" with field=field %}
             </td>
         </tr>
+        {% empty %}
+        <p>Что-то пошло не так</p>
+        {% endfor %}
     </table>
     <input type="submit" value="Send">
     </form>

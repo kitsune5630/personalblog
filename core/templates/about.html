@@ -17,8 +17,9 @@
         <p>Фамилия: {{ lastname }}</p>
         <p>Отчество: {{ surname }}</p>
         <p>Контактная информация</p>
-        <p>Телеграм: <a href="{{ contact_info.telegram_url }}">{{ contact_info.telegram }}</a></p>
-        <p>Электронная почта: {% include "includes/proton-icon.html" %}{{ contact_info.mail }}</p>
+        <p>Телеграм: <a href="{{ contact_info.telegram_url }}" target="_blank" rel="noopener">{{ contact_info.telegram }}</a></p>
+        <p>Электронная почта: {% include "includes/proton-icon.html" %}<a href="mailto:{{ contact_info.mail }}">{{ contact_info.mail }}</a></p>
+        {% include 'about_references.html'%}
     </div>
 </div>
 <div class="profile-details">
@@ -34,7 +35,7 @@
     <ul>
         {% for project in projects %}
         <li>
-            <a href="{{ project.url }}">{{ project.title }}</a>
+            <a href="{{ project.url }}" target="_blank" rel="noopener">{{ project.title }}</a>
         </li>
         {% empty %}
             <li>Пусто и грустно</li>
