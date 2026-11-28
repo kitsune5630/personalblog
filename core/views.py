@@ -3,10 +3,11 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
-from .forms import CustomAuthenticationForm, PostCreationForm, CustomUserCreationform, ProfileCreationForm, CommentForm
-from .models import PostsModel, ProfileModel
+from .forms import SearchForm, CustomAuthenticationForm, PostCreationForm, CustomUserCreationform, ProfileCreationForm, CommentForm
+from .models import PostsModel, ProfileModel, TagsModel
 from pathlib import Path
 import json
+from django.utils import timezone
 
 # Create your views here.
 def home(request):
@@ -19,6 +20,27 @@ def home(request):
         "count_posts": PostsModel.objects.count(),
     }
     return render(request, "home.html", context=context)
+
+def search(request):
+    search_form = SearchForm(request.GET or None)
+    results = PostsModel.objects.none()
+    if search_form.is_valid():
+        title = search_form.cleaned_data.get('title')
+        author = search_form.cleaned_data.get('author')
+        tag = search_form.cleaned_data.get('tag')
+        if title or tag or author:
+            results = PostsModel.objects.all()
+            if title:
+                results = results.filter(title__icontains=title)
+            if tag:
+                results = results.filter(tags=tag)
+            if author:
+                results = results.filter(author__username=author)
+    context = {
+        "search_form": search_form,
+        "results": results.distinct()
+    }
+    return render(request, 'search.html', context)
 
 def profile_edit(request):
     """
@@ -102,14 +124,23 @@ def post_edit(request, slug):
     if request.method == "POST":
         post_editform = PostCreationForm(request.POST)
         if post_editform.is_valid():
+            post.tags.clear()
             post.title = post_editform.cleaned_data["title"].strip()
             post.text = post_editform.cleaned_data["text"].strip()
+            post.changed_at = timezone.now()
+            tags_string = post_editform.cleaned_data.get('tags_input', '')
+            if tags_string:
+                tag_names = tags_string.split()
+                for tag_name in tag_names:
+                    tag, created = TagsModel.objects.get_or_create(name=tag_name)
+                    post.tags.add(tag)
             post.save()
             return redirect("post_detail", slug=slug)
     else:
         initial_data = {
             'title': post.title,
             'text': post.text,
+            'tags_input': " ".join([tag.name for tag in post.tags.all()])
         }
         post_editform = PostCreationForm(initial=initial_data)
     return render(request, "post_edit.html", {"post_editform": post_editform})
@@ -124,9 +155,15 @@ def post_create(request):
             title = post_createform.cleaned_data["title"].strip()
             text = post_createform.cleaned_data["text"].strip()
             author = request.user
-            PostsModel.objects.create(
+            tags_string = post_createform.cleaned_data.get('tags_input', '')
+            post = PostsModel.objects.create(
                 title=title, text=text, author=author
             )
+            if tags_string:
+                tag_names = tags_string.split()
+                for tag_name in tag_names:
+                    tag, created = TagsModel.objects.get_or_create(name=tag_name)
+                    post.tags.add(tag)
             messages.success(request, "Пост успешно создан!")
             return redirect("success_post_create")
     else:

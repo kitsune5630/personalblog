@@ -48,6 +48,9 @@ urlpatterns = [
     path("profile/edit/", views.profile_edit, name="profile_edit"),
     path("profile/<slug:slug>/", views.profile_user, name="profile_user"),
 
+    # поиск
+    path("search/", views.search, name="post_search"),
+
     # обо мне
     path("about/", views.about, name='about'),
 ]
